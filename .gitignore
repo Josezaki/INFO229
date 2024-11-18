@@ -1,0 +1,8 @@
+# Entornos virtuales
+src/API/venv/
+
+# Dependencias
+src/API/**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
