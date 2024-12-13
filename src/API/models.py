@@ -77,16 +77,15 @@ class PetitionerService(Base):
     id_service = Column(Integer, ForeignKey("service.id", ondelete="CASCADE"))
     id_petitioner = Column(Integer, ForeignKey("petitioner.id", ondelete="CASCADE"))
     petition_date = Column(Date, nullable=False)
-    solved = Column(Boolean)
-
+    solvePetitionerReview
     # Definir relaciones
     service = relationship("Service", back_populates="petitioner_service")
     petitioner = relationship("Petitioner", back_populates="petitioner_service")
-    evaluation_petitioner = relationship("EvaluationPetitioner", back_populates="petitioner_service", uselist=False)
+    petitioner_review = relationship("PetitionerReview", back_populates="petitioner_service", uselist=False)
     evaluation_worker = relationship("EvaluationWorker", back_populates="petitioner_service", uselist=False)
 
-class EvaluationPetitioner(Base):
-    __tablename__ = "evaluation_petitioner"
+class PetitionerReview(Base):
+    __tablename__ = "petitioner_review"
 
     id = Column(Integer, primary_key=True, index=True)
     id_petitioner_service = Column(Integer, ForeignKey("petitioner_service.id"), unique=True, nullable=False)
@@ -94,7 +93,7 @@ class EvaluationPetitioner(Base):
     calification = Column(Integer, nullable=False)
 
     # Definir relaciones
-    petitioner_service = relationship("PetitionerService", back_populates="evaluation_petitioner")
+    petitioner_service = relationship("PetitionerService", back_populates="petitioner_review")
 
 class EvaluationWorker(Base):
     __tablename__ = "evaluation_worker"
@@ -135,11 +134,11 @@ class WorkerRequest(Base):
     # Definir relaciones
     worker = relationship("Worker", back_populates="worker_request")
     request = relationship("Request", back_populates="worker_request")
-    petitioner_review = relationship("PetitionerReview", back_populates="worker_request", uselist=False)
+    evaluation_petitioner = relationship("EvaluationPetitioner", back_populates="worker_request", uselist=False)
     worker_review = relationship("WorkerReview", back_populates="worker_request", uselist=False)
 
-class PetitionerReview(Base):
-    __tablename__ = "petitioner_review"
+class EvaluationPetitioner(Base):
+    __tablename__ = "evaluation_petitioner"
 
     id = Column(Integer, primary_key=True, index=True)
     id_worker_request = Column(Integer, ForeignKey("worker_request.id"), unique=True, nullable=False)
@@ -147,7 +146,7 @@ class PetitionerReview(Base):
     calification = Column(Integer, nullable=False)
 
     # Definir relaciones
-    worker_request = relationship("WorkerRequest", back_populates="petitioner_review")
+    worker_request = relationship("WorkerRequest", back_populates="evaluation_petitioner")
 
 class WorkerReview(Base):
     __tablename__ = "worker_review"

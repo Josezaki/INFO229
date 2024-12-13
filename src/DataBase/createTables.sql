@@ -65,7 +65,7 @@ create table petitioner_service(
 );
 
 -- Evaluacion de parte del solicitante a un servicio dado por un trabajador
-create table evaluation_petitioner( 
+create table petitioner_review( 
     id serial primary key not null,
     id_petitioner_service integer unique not null,
     foreign key (id_petitioner_service) references petitioner_service(id),
@@ -74,7 +74,7 @@ create table evaluation_petitioner(
 );
 
 -- Evaluacion de parte del trabajador al solicitante dado un servicio dado por un trabajador
-create table evaluation_worker( 
+create table evaluation_worker ( 
     id serial primary key not null,
     id_petitioner_service integer unique not null,
     foreign key (id_petitioner_service) references petitioner_service(id),
@@ -107,7 +107,7 @@ create table worker_request (
 );
 
 -- Resena de un solicitante a un trabajador por una solicitud realizada al solicitante
-create table petitioner_review ( 
+create table evaluation_petitioner ( 
     id serial primary key not null,
     id_worker_request integer unique not null,
     foreign key (id_worker_request) references worker_request(id),

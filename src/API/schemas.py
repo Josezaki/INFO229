@@ -95,15 +95,15 @@ class PetitionerService(PetitionerServiceBase):
         from_attributes = True
 
 
-class EvaluationPetitionerBase(BaseModel):
+class PetitionerReviewBase(BaseModel):
     id_petitioner_service: int
     content: str
     calification: int
 
-class EvaluationPetitionerCreate(EvaluationPetitionerBase):
+class PetitionerReviewCreate(EvaluationPetitionerBase):
     pass
 
-class EvaluationPetitioner(EvaluationPetitionerBase):
+class PetitionerReview(EvaluationPetitionerBase):
     id: int
 
     class Config:
@@ -157,15 +157,15 @@ class WorkerRequest(WorkerRequestBase):
     class Config:
         orm_mode = True
 
-class PetitionerReviewBase(BaseModel):
+class EvaluationPetitionerBase(BaseModel):
     id_worker_request: int
     content: str
     calification: int
 
-class PetitionerReviewCreate(PetitionerReviewBase):
+class EvaluationPetitionerCreate(PetitionerReviewBase):
     pass
 
-class PetitionerReview(PetitionerReviewBase):
+class EvaluationPetitioner(PetitionerReviewBase):
     id: int
 
     class Config:
