@@ -22,20 +22,16 @@ async def get_petitioner_review_by_id(
     result = await db.execute(select(models.PetitionerReview).filter(models.PetitionerReview.id == petitioner_review_id))
     return result.scalars().first()
 
-# Obtener todos los registros de petitioner_review dado un id_worker
-async def get_petitioners_reviews_by_id_request(
+# Obtener todos los registros de petitioner_review dada un id_service
+async def get_petitioners_reviews_by_id_service(
     db: AsyncSession,
-    worker_id: int
+    service_id: int
 ) -> List[models.PetitionerReview]:
-    query = (
-        select(models.PetitionerReview)
-        .join(models.WorkerRequest, models.WorkerRequest.id == models.PetitionerReview.id_worker_request and models.WorkerRequest.id_worker == worker_id)
+    query=(
+        select(models.PetitionerReview).
+        join(models.PetitionerService, models.PetitionerService.id == models.PetitionerReview.id_petitioner_service).
+        where(models.PetitionerService.id == service_id)
     )
-    # query = (
-    #     select(models.PetitionerReview)
-    #     .join(models.WorkerRequest, models.WorkerRequest.id == models.PetitionerReview.id_worker_request)
-    #     .join(models.Request, models.Request.id == models.WorkerRequest.id_request)
-    #     .filter(models.Request.id_worker == worker_id)
-    # )
+
     result = await db.execute(query)
     return result.scalars().all()

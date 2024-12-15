@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
-from .. import schemas, database
-from ..crud import petitioner_review_crud
+from ... import schemas, database
+from ...crud import petitioner_review_crud
 
 router = APIRouter()
 
@@ -34,13 +34,12 @@ async def get_petitioner_review_by_id(
         raise HTTPException(status_code=404, detail="Petitioner review not found")
     return schemas.PetitionerReview.from_orm(petitioner_review)
 
-# Obtiene todas las evaluaciones de un trabajador dado un id de trabajador
-@router.get("/worker/{id_worker}/evaluation", response_model=List[schemas.PetitionerReview])
+# Obtiene todas las resenas de un servicio dada la id de un servicio
+@router.get("/service/{id_service}/review", response_model=List[schemas.PetitionerReview])
 async def get_worker_reviews_by_id(
-    id_worker: int,
+    id_service: int,
     db: AsyncSession = Depends(get_db)
 ):
-    petitioner_reviews = await petitioner_review_crud.get_petitioners_reviews_by_id_request(db=db, worker_id=id_worker)
-    if petitioner_reviews == None:
-        raise HTTPException(status_code=404, detail="Petitoners reviews are not found")
-    return [schemas.PetitionerReview.from_orm(petitioner_review) for petitioner_review in petitioner_reviews]
+    result = await petitioner_review_crud.get_petitioners_reviews_by_id_service(db=get_db, service_id=id_service)
+    
+    return [schemas.PetitionerReview.from_orm(petitioner_review) for petitioner_review in result]

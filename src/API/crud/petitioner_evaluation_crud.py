@@ -1,12 +1,24 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import List
-from .. import models, schemas, database
+from .. import models, models, database
+
+# Confirma si el worker_request esta resuelto
+async def confirm_worker_request(
+    db: AsyncSession,
+    worker_request_id: int
+) -> bool:
+    query = (
+        select(models.WorkerRequest).
+        where(models.WorkerRequest.worker_request_id == worker_request_id and models.WorkerRequest.solved == True)
+    )
+    result = await db.execute(query)
+    return not (result == None)
 
 # Crear un nuevo registro de petitioner_evaluation
 async def create_petitioner_evaluation(
     db: AsyncSession,
-    petitioner_evaluation: schemas.EvaluationPetitionerCreate
+    petitioner_evaluation: models.EvaluationPetitioner
 ):
     db_petitioner_evaluation = models.EvaluationPetitioner(**petitioner_evaluation.dict())
     db.add(db_petitioner_evaluation)
@@ -23,14 +35,15 @@ async def get_petitioner_evaluation_by_id(
     return result.scalars().first()
 
 # Obtener todos los registros de petitioner_evaluation dado un id_service
-async def get_petitioners_evaluations_by_id_service(
+async def get_petitioners_evaluations_by_id_worker(
     db: AsyncSession,
-    service_id: int
+    worker_id: int
 ) -> List[models.EvaluationPetitioner]:
     query = (
-        select(models.EvaluationPetitioner)
-        .join(models.PetitionerService, models.PetitionerService.id == models.EvaluationPetitioner.id_petitioner_service and models.PetitionerService.id_service == service_id)
+        select(models.EvaluationPetitioner).
+        join(models.WorkerRequest, models.EvaluationPetitioner.id_worker_request == models.WorkerRequest.id).
+        join(models.Worker, models.Worker.id == models.WorkerRequest.id_worker).
+        where(models.Worker.id == worker_id)
     )
-
     result = await db.execute(query)
     return result.scalars().all()

@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
-from .. import schemas, database
-from ..crud import users_crud
+from ... import schemas, database
+from ...crud import users_crud
 
 router = APIRouter()
 
@@ -14,12 +14,30 @@ def get_db():
     finally:
         db.close()
 
-# Crea un usuario
-@router.post("/users/", response_model=schemas.UserCreate)
-async def create_user(user: schemas.UserCreate, db: AsyncSession = Depends(get_db)):
+# Validación de formato de RUT chileno
+def validate_rut(rut: int):
+    # Agregar lógica para validar el RUT chileno
+    if rut < 1000000 or rut > 99999999:  # Ejemplo básico, agregar verificación de dígito verificador
+        raise HTTPException(status_code=400, detail="Invalid RUT format")
+
+
+# Ruta: Crear usuario
+@router.post("/users", response_model=schemas.UserCreate)
+async def create_user(
+    user: schemas.UserCreate,
+    db: AsyncSession = Depends(get_db)
+):
+    validate_rut(user.rut)  # Validar RUT
+    if user.age < 18:
+        raise HTTPException(status_code=400, detail="User must be at least 18 years old")
+    
+    # Verificar duplicados
+    existing_user = await users_crud.check_rut_or_phone_in_use(db=db, rut=user.rut, phone=user.phone_number)
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Phone number or RUT already registered")
+    
     user = await users_crud.create_user(db=db, user=user)
     return schemas.User.from_orm(user)
-
 
 # Obtiene un usuario por id
 @router.get("/users/{user_id}", response_model=schemas.User)
@@ -67,8 +85,30 @@ async def get_user_login (mail: str, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return schemas.UserLogin.from_orm(user_login)
 
-# Crea un user_login
+# Ruta: Crear login de usuario
 @router.post("/user_login/", response_model=schemas.UserLoginCreate)
-async def post_user_login (user_login:schemas.UserLoginCreate, db:AsyncSession = Depends(get_db)):
+async def post_user_login(
+    user_login: schemas.UserLoginCreate,
+    db: AsyncSession = Depends(get_db)
+):
+    if len(user_login.pass_hash) < 8:  # Validar contraseña
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
+    
+    # Verificar si el usuario existe
+    existing_user = await users_crud.get_user_by_id(db=db, user_id=user_login.id_user)
+    if not existing_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Verificar si el usuario ya tiene un login
+    existing_login = await users_crud.get_user_login_by_id(db=db, user_id=user_login.id_user)
+    if existing_login:
+        raise HTTPException(status_code=400, detail="User already has a login")
+    
+
+    # Verificar duplicados
+    existing_user_login = await users_crud.get_user_login(db=db, mail=user_login.mail)
+    if existing_user_login:
+        raise HTTPException(status_code=400, detail="Mail already registered")
+    
     user_login = await users_crud.create_user_login(db=db, user_login=user_login)
     return schemas.UserLogin.from_orm(user_login)

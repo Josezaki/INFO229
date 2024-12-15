@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
-from .. import schemas, database
-from ..crud import worker_evaluation_crud
+from ... import schemas, database
+from ...crud import worker_evaluation_crud
 
 router = APIRouter()
 
@@ -36,7 +36,7 @@ async def get_worker_evaluation_by_id(
     return schemas.EvaluationWorker.from_orm(worker_evaluation)
 
 
-# Obtiene todas las evaluaciones de un trabajador dado un id de trabajador
+# Obtiene todas las evaluaciones de un solicitante dado un id de solicitante
 @router.get("/petitioner/{id_petitioner}/evaluation", response_model=List[schemas.EvaluationWorker])
 async def get_worker_evaluations_by_id(
     id_petitoner: int,

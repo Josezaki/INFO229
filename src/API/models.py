@@ -77,7 +77,7 @@ class PetitionerService(Base):
     id_service = Column(Integer, ForeignKey("service.id", ondelete="CASCADE"))
     id_petitioner = Column(Integer, ForeignKey("petitioner.id", ondelete="CASCADE"))
     petition_date = Column(Date, nullable=False)
-    solvePetitionerReview
+    solve = Column(Boolean, nullable=True)
     # Definir relaciones
     service = relationship("Service", back_populates="petitioner_service")
     petitioner = relationship("Petitioner", back_populates="petitioner_service")

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
-from .. import schemas, database
-from ..crud import request_crud as crud
+from ... import schemas, database
+from ...crud import request_crud as crud
 
 router = APIRouter()
 

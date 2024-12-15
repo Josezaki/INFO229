@@ -95,3 +95,29 @@ async def get_user_login(db: AsyncSession, mail: str):
     result = await db.execute(select(models.UserLogin).filter(models.UserLogin.mail == mail))
     user_login = result.scalars().first()
     return user_login
+
+
+# Verifica si un RUT o número de teléfono ya está en uso
+async def check_rut_or_phone_in_use(db: AsyncSession, phone: int, rut: int):
+    # Verificar el número de teléfono
+    phone_exists = await db.execute(select(models.User).filter(models.User.phone_number == phone))
+    phone_exists = phone_exists.scalars().first()
+
+    if phone_exists:
+        raise HTTPException(status_code=400, detail="Phone number is already in use")
+
+    # Verificar el RUT
+    rut_exists = await db.execute(select(models.User).filter(models.User.rut == rut))
+    rut_exists = rut_exists.scalars().first()
+
+    if rut_exists:
+        raise HTTPException(status_code=400, detail="RUT is already in use")
+
+    return None
+
+# Obtener login por ID de usuario
+async def get_user_login_by_id(db: AsyncSession, user_id: int):
+    result = await db.execute(select(models.UserLogin).filter(models.UserLogin.id_user == user_id))
+    user_login = result.scalars().first()
+    return user_login
+

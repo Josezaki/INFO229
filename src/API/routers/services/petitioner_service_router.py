@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
-from .. import schemas, database
-from ..crud import petitioner_service_crud
+from ... import schemas, database
+from ...crud import petitioner_service_crud
 
 router = APIRouter()
 

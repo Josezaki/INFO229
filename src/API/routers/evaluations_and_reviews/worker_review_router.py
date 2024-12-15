@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
-from .. import schemas, database
-from ..crud import worker_review_crud
+from ... import schemas, database
+from ...crud import worker_review_crud
 
 router = APIRouter()
 
@@ -34,6 +34,7 @@ async def get_worker_review_by_id(
         raise HTTPException(status_code=404, detail="Worker review not found")
     return schemas.WorkerReview.from_orm(worker_review)
 
+# Obtiene todas las resenas de una peticion dada una id de peticion
 @router.get("/request/{id_request}/review", response_model=List[schemas.WorkerReview])
 async def get_worker_review_by_request_id(
     id_request: int,

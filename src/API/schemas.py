@@ -100,10 +100,10 @@ class PetitionerReviewBase(BaseModel):
     content: str
     calification: int
 
-class PetitionerReviewCreate(EvaluationPetitionerBase):
+class PetitionerReviewCreate(PetitionerReviewBase):
     pass
 
-class PetitionerReview(EvaluationPetitionerBase):
+class PetitionerReview(PetitionerReviewBase):
     id: int
 
     class Config:
@@ -162,10 +162,10 @@ class EvaluationPetitionerBase(BaseModel):
     content: str
     calification: int
 
-class EvaluationPetitionerCreate(PetitionerReviewBase):
+class EvaluationPetitionerCreate(EvaluationPetitionerBase):
     pass
 
-class EvaluationPetitioner(PetitionerReviewBase):
+class EvaluationPetitioner(EvaluationPetitionerBase):
     id: int
 
     class Config:

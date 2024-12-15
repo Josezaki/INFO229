@@ -2,7 +2,6 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from contextlib import asynccontextmanager
 
-
 # IMPORTANTE: username y password aun por definir
 #DATABASE_URL = "postgresql+asyncpg://username:password@localhost/jobbly"
 DATABASE_URL = "postgresql+asyncpg://postgres:1234@localhost/jobbly"
