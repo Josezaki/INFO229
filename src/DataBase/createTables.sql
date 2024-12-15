@@ -12,7 +12,7 @@ create table users (
     lastname varchar(30),
     phone_number integer unique not null,
     address varchar(30),
-    rut integer not null,
+    rut integer unique not null,
     age integer not null,
     calification real not null
 );
@@ -21,7 +21,7 @@ create table users (
 create table user_login (
     id serial primary key not null,
     mail varchar(30) unique not null,
-    pass_hash varchar(30) unique not null,
+    pass_hash varchar(30) not null,
     id_user int unique not null,
     foreign key (id_user) references users(id) on delete cascade
 );
