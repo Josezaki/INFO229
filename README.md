@@ -42,31 +42,30 @@ Para la API se utilizó [fastAPI](https://fastapi.tiangolo.com).
       ```
 
 
-## App Móvil
+## App Web
 
-La aplicación movil se creó con [React Native](https://reactnative.dev/docs/environment-setup) con el siguiente comando:
+La pagina se creó con [next, react y react-dom](https://reactnative.dev/docs/environment-setup) con el siguiente comando:
 ```
-npx create-expo-app@latest
+npm install next react react-dom
 ```
 
 ### Pre-requisitos:
-1. Instalar [Node.js](https://nodejs.org/en)  para poder ejecutar los comandos de npm.
-2. Instalar [Android Studio](https://developer.android.com/studio) para poder emular la aplicación en un dispositivo virtual.
-
+1. Instalar [react-dom] necesario para su funcionamiento.
+2. Instalar [Next] para renderizar el servidor y generacion de sitios.
+3. Instalar [react] para construir las interfaces de usuario.
 
 ### Comenzando
 
 1. Instalar dependencias
 
    ```bash
-   npm install
+   npm run dev
    ```
 
 2. Iniciar la aplicación
 
    ```bash
-    npx expo start
+    npm start
    ```
 
-Luego se debe iniciar el emulador de Android Studio para poder visualizar la aplicación. con la tecla "a" se abrirá la aplicación en el emulador.
-Tambien se puede escanear el código QR con la aplicación de Expo Go en un dispositivo móvil.
+Y una vez lista, se entrega una IP o un LocalHost con la pagina implementada, junto con su puerto correspondiente. 
