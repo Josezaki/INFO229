@@ -1,0 +1,35 @@
+[
+    {
+      "id": 1,
+      "type": "request",
+      "title": "Necesito clases de inglés",
+      "description": "Estoy preparando el TOEFL y necesito ayuda para practicar speaking.",
+      "user": "juan.perez",
+      "price": 15000
+    },
+    {
+      "id": 2,
+      "type": "service",
+      "title": "Ofrezco reparación de computadores",
+      "description": "Experiencia en formateo, instalación de software y optimización.",
+      "user": "maria.gomez",
+      "price": 20000
+    },
+    {
+      "id": 3,
+      "type": "request",
+      "title": "Busco alguien que me enseñe a cocinar",
+      "description": "Soy principiante, interesado en aprender recetas básicas.",
+      "user": "carlos.rios",
+      "price": 10000
+    },
+    {
+      "id": 4,
+      "type": "service",
+      "title": "Asesorías en proyectos de ingeniería",
+      "description": "Ayuda en diseño y cálculo estructural para proyectos universitarios.",
+      "user": "camila.fuentes",
+      "price": 25000
+    }
+  ]
+  

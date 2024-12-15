@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  background-color: #ffffff; /* Fondo blanco */
+  margin: 0; /* Elimina los márgenes por defecto */
+  font-family: Arial, sans-serif; /* Configuración de fuente opcional */
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
